@@ -327,7 +327,7 @@ function draw()
 	}
 
 	//debugging true/false
-	debug(true);
+	debug(false);
 }
 
 // ---------------------
