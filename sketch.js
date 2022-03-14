@@ -327,17 +327,16 @@ function draw() {
 }
 function showStartScreen() {
 	push();
+	textFont('Calibri');
 	background(0);
 	textSize(32);
 	strokeWeight(2);
 	stroke("white");
-	text(`'SPACE' to show menu`, windowWidth / 3, windowHeight / 2 - 240);
-	text(`'1 - 6' to select visual template`, windowWidth / 3, windowHeight / 2 - 200);
-	text(`'ENTER' play/pause current song`, windowWidth / 3, windowHeight / 2 - 160);
-	text(`'←' '→' to change song`, windowWidth / 3, windowHeight / 2 - 120);
-	text(`'↑' '↓' to adjust volume`, windowWidth / 3, windowHeight / 2 - 80);
-	text(`'F' to go in fullscreen`, windowWidth / 3, windowHeight / 2 - 40);
-	text(`Press 'ENTER' or click to continue!`, windowWidth / 3, windowHeight / 2 + 100);
+	text(`Explore the world and collect coins!`, windowWidth / 5, windowHeight / 2 - 200);
+	text(`Don't stay in the water for too long!`, windowWidth / 5, windowHeight / 2 - 160);
+	text(`'←' '→' to move`, windowWidth / 5, windowHeight / 2 - 80);
+	text(`'↑' to jump`, windowWidth / 5, windowHeight / 2 - 40);
+	text(`Press 'ENTER' to continue!`, windowWidth / 5, windowHeight / 2 + 60);
 	pop();
 }
 // ---------------------
