@@ -1,3 +1,2 @@
 # Green_Dinos_Big_Adventure
-game project for ITP1 course
-Hello
+game create for ITP1, also a test ground for my CSS
