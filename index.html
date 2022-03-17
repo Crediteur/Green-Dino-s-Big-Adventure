@@ -6,16 +6,99 @@
   <script src="p5.sound.min.js"></script>
   <script src="sketch.js"></script>
   <style>
+    #div2 {
+      background: #73AD21;
+      border-radius: 25px;
+      border: 20px outset #73AD21;
+
+    }
+
+    div {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     body {
-      padding: 0;
-      margin: 0;
+      background-color: #ad61a1;
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    #description {
+      font-family: Calibri, sans-serif;
+      color: #3d061d;
+      font-size: 20px;
+      font-variant: small-caps;
+      font-weight: bold;
+      display: inline-block;
+      animation: fadeIn linear 7s;
+      -webkit-animation: fadeIn linear 7s;
+      -moz-animation: fadeIn linear 7s;
+      -o-animation: fadeIn linear 7s;
+      -ms-animation: fadeIn linear 7s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @-moz-keyframes fadeIn {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @-webkit-keyframes fadeIn {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @-o-keyframes fadeIn {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @-ms-keyframes fadeIn {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
     }
   </style>
 </head>
 
 <body>
-  <h1>Hello</h1>
-  <p></p>
+  <div id="div2">
+    <div id="sketch_holder">
+    </div>
+  </div>
+  <p id="description">Help Dino explore the confined world of its existence!</p>
 </body>
 
 </html>

@@ -67,7 +67,8 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(1024, 576);
+	canvas = createCanvas(1024, 576);
+	canvas.parent("sketch_holder");
 	sun_x = -200;
 	sun_y = 600;
 	sunAlpha = 50;
@@ -238,6 +239,7 @@ function draw() {
 			rect(canyons[i].x_pos, floorPos_y, canyons[i].width, height)
 		}
 		pop();
+
 		// Logic to make the game character move or the background scroll.
 		if (isLeft) {
 			if (gameChar_x > width * 0.3) {
@@ -260,71 +262,49 @@ function draw() {
 		// Logic to make the game character rise and fall.
 		gameChar_y = constrain(gameChar_y, -30, height - 1);
 
+		//character collision and jumping code
 		charJump();
 
-		//temp hardcode solution
-		if (gameChar_y > floorPos_y || checkPlatform(platforms[0]) == true || checkPlatform(platforms[1]) == true || checkPlatform(platforms[2]) == true || checkPlatform(platforms[3]) == true || checkPlatform(platforms[4]) == true || checkPlatform(platforms[5]) == true || checkPlatform(platforms[6]) == true) {
-			isFalling = false;
-			isJumping = false;
-		}
-		else if (gameChar_y <= floorPos_y) {
-			gameChar_y += 2;
-			isFalling = true;
-			inWater = false;
-			isPlummeting = false;
-		}
-		else {
-			gameChar_y = floorPos_y;
-			isFalling = false;
-			isPlummeting = false;
-		}
+		//show game score
+		gameScore();
 
-		// Update real position of gameChar for collision detection.
-		if (gameChar_world_x < -2000 || gameChar_world_x > 6000) {
-			gameChar_x = constrain(gameChar_x, 310, 450);
-		}
-		gameChar_world_x = gameChar_x - scrollPos;
+		//check & show player lives
+		checkPlayerLives();
 
-		//game score
-		game_score = constrain(game_score, 0, 50000);
-		textSize(20);
-		fill(250);
-		text("Score: " + game_score, 20, 40);
-
-		//player lives
-		checkPlayerDie();
-		text("Lives", width - 88, 40);
-		for (let i = 0; i < lives; i++) {
-			noStroke();
-			fill(147, 227, 50);
-			ellipse(width - 30 - i * 35, 65, 30, 30);
-			//stroke(90,20,30);
-			fill(165, 0, 0);
-			ellipse(width - 30 - i * 35, 65, 20, 20);
-		}
-
-		//game complete
-		fill(255);
-		if (flagpole.isReached == true && lives > 0) {
-			gameComplete = true;
-			textSize(25);
-			text("Game Complete!", width / 2 - 60, height / 2);
-			textSize(12);
-			text("Press 'r' to play again", width / 2 - 20, height / 2 + 20);
-		}
-
-		//game over
-		if (lives < 1 && gameComplete == false) {
-			textSize(25);
-			text("Game Over", width / 2 - 10, height / 2);
-			textSize(12);
-			text("Press 'r' to try again", width / 2, height / 2 + 20);
-		}
+		//check if the player wins or loses
+		checkGameState();
 
 		//debugging true/false
 		debug(false);
 	}
 }
+function checkGameState() {
+	fill(255);
+	//game complete
+	if (flagpole.isReached == true && lives > 0) {
+		gameComplete = true;
+		textSize(25);
+		text("Game Complete!", width / 2 - 60, height / 2);
+		textSize(12);
+		text("Press 'r' to play again", width / 2 - 20, height / 2 + 20);
+	}
+
+	//game over
+	if (lives < 1 && gameComplete == false) {
+		textSize(25);
+		text("Game Over", width / 2 - 10, height / 2);
+		textSize(12);
+		text("Press 'r' to try again", width / 2, height / 2 + 20);
+	}
+}
+
+function gameScore() {
+	game_score = constrain(game_score, 0, 50000);
+	textSize(20);
+	fill(250);
+	text("Score: " + game_score, 20, 40);
+}
+
 function showStartScreen() {
 	push();
 	textFont('Calibri');
@@ -332,11 +312,11 @@ function showStartScreen() {
 	textSize(32);
 	strokeWeight(2);
 	stroke("white");
-	text(`Explore the world and collect coins!`, windowWidth / 5, windowHeight / 2 - 200);
-	text(`Don't stay in the water for too long!`, windowWidth / 5, windowHeight / 2 - 160);
-	text(`'←' '→' to move`, windowWidth / 5, windowHeight / 2 - 80);
-	text(`'↑' to jump`, windowWidth / 5, windowHeight / 2 - 40);
-	text(`Press 'ENTER' to continue!`, windowWidth / 5, windowHeight / 2 + 60);
+	text(`Explore the world and collect coins!`, width / 3.5, height / 2 - 160);
+	text(`Don't stay in the water for too long!`, width / 3.5, height / 2 - 120);
+	text(`'←' '→' to move`, width / 3.5, height / 2 - 40);
+	text(`'↑' to jump`, width / 3.5, height / 2);
+	text(`Press 'ENTER' to continue!`, width / 3.5, height / 2 + 100);
 	pop();
 }
 // ---------------------
@@ -356,17 +336,45 @@ function charJump() {
 			gameChar_y -= 50;
 		}
 	}
+	//temp hardcode solution
+	if (gameChar_y > floorPos_y || checkPlatform(platforms[0]) == true || checkPlatform(platforms[1]) == true || checkPlatform(platforms[2]) == true
+		|| checkPlatform(platforms[3]) == true || checkPlatform(platforms[4]) == true || checkPlatform(platforms[5]) == true || checkPlatform(platforms[6]) == true) {
+		isFalling = false;
+		isJumping = false;
+	}
+	else if (gameChar_y <= floorPos_y) {
+		gameChar_y += 2;
+		isFalling = true;
+		inWater = false;
+		isPlummeting = false;
+	}
+	else {
+		gameChar_y = floorPos_y;
+		isFalling = false;
+		isPlummeting = false;
+	}
+
+	// Update real position of gameChar for collision detection.
+	if (gameChar_world_x < -2000 || gameChar_world_x > 6000) {
+		gameChar_x = constrain(gameChar_x, 310, 450);
+	}
+	gameChar_world_x = gameChar_x - scrollPos;
 }
 
 function keyPressed() {
 
 	//left arrow
 	if (keyCode == 37) {
-		isLeft = true;
-		isSit = false;
+		if (mode == 0) {
+			mode = 1;
+		}
+		else {
+			isLeft = true;
+			isSit = false;
+		}
 	}
 	//up arrow or spacebar
-	if (keyCode == 38 || keyCode == 32) {
+	if ((keyCode == 38 || keyCode == 32) && mode == 1) {
 		if (!isFalling) {
 			isJumping = true;
 			isSit = false;
@@ -377,8 +385,13 @@ function keyPressed() {
 	}
 	//right arrow
 	if (keyCode == 39) {
-		isRight = true;
-		isSit = false;
+		if (mode == 0) {
+			mode = 1;
+		}
+		else {
+			isRight = true;
+			isSit = false;
+		}
 	}
 	//down arrow
 	if (keyCode == 40) {
@@ -391,23 +404,25 @@ function keyPressed() {
 			game_score += 10;
 		}
 	}
+	//enter
 	if (keyCode == 13 && mode == 0) {
 		mode = 1;
 	}
 }
 
 function keyReleased() {
-
+	//left arrow
 	if (keyCode == 37) {
 		isLeft = false;
 		lastDir = 0;
 	}
+	//right arrow
 	if (keyCode == 39) {
 		isRight = false;
 		lastDir = 1;
 	}
 	//when r is pressed, reset the objects 
-	if (keyCode == 82) {
+	if (keyCode == 82 && mode == 1) {
 		game_score = 0;
 		setup();
 	}
@@ -942,7 +957,8 @@ function checkCollectable(t_collectable) {
 // ----------------------------------
 
 //function to check remaining lives
-function checkPlayerDie() {
+function checkPlayerLives() {
+	//checks if player loses a live
 	if (gameChar_y >= height - 1 && lives > 0 && gameComplete == false) {
 		lives--;
 		game_score -= 100;
@@ -950,6 +966,16 @@ function checkPlayerDie() {
 		if (lives != 0) {
 			startGame();
 		}
+	}
+	//draws and keeps track of lives on screen
+	text("Lives", width - 88, 40);
+	for (let i = 0; i < lives; i++) {
+		noStroke();
+		fill(147, 227, 50);
+		ellipse(width - 30 - i * 35, 65, 30, 30);
+		//stroke(90,20,30);
+		fill(165, 0, 0);
+		ellipse(width - 30 - i * 35, 65, 20, 20);
 	}
 }
 
@@ -1060,19 +1086,4 @@ function debug(boolean) {
 
 	}
 }
-
-/*
-DISCLAIMER: I do not own any of these assets
-bgm
-	https://opengameart.org/content/adventure-music
-
-sound effects 
-	https://www.zapsplat.com/music/cartoon-voice-high-pitched-says-ouch-1/
-	https://www.zapsplat.com/page/3/?s=jump&post_type=music&sound-effect-category-id
-	https://assets.mixkit.co/sfx/download/mixkit-cartoon-positive-sound-2255.wav
-	https://mixkit.co/free-sound-effects/water/
-
-images 
-	http://www.signaturecakes.com.ng/wp-content/uploads/2015/04/Cake-and-Plate.png
-	https://www.seekpng.com/png/full/270-2704301_the-aim-of-discipline-is-to-provide-classrooms.png
-*/
+// DISCLAIMER: I do not own any of these assets
