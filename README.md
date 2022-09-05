@@ -1,4 +1,8 @@
-# Green Dinos Big Adventure
-simple side-scrolling game create for ITP1 using Javascript and the p5.js library
+## Green Dinos Big Adventure
 
-also a test ground for my CSS
+simple side-scrolling platform game 
+
+Written in Javascript using the p5.js library
+
+Project for ITP1 
+
